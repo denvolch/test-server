@@ -1,6 +1,27 @@
 // const http = require('http')
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose')
+
+// if (process.argv.length < 3) {
+//     console.log('give password as argument')
+//     process.exit(1)
+// }
+
+const password = process.argv[2]
+
+const url = `mongodb+srv://scribblerdw:${password}@cluster0.sfkyjdw.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+
+mongoose.set('strictQuery', false)
+
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+    content: String,
+    important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 let notes = [
   {
@@ -31,12 +52,12 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('dist'))
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World</h1>')
+app.get('/', (req, res) => {
+  res.send('<h1>Loading...</h1>')
 })
 
-app.get('/api/notes', (request, response) => {
-  response.json(notes)
+app.get('/api/notes', (req, res) => {
+  res.json(notes)
 })
 
 app.get('/api/notes/:id', (req, res) => {
