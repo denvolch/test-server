@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', (req, res, next) => {
-  console.log('i sent GET for all', req, res)
+  // console.log('i sent GET for all', req, res)
   Note
     .find({})
     .then(notes => {
