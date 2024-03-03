@@ -1,13 +1,12 @@
 const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
-// console.log('connecting to', url)
 
 mongoose.set('strictQuery', false)
 
 mongoose
   .connect(url)
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch(err => {
@@ -15,12 +14,12 @@ mongoose
   })
 
 const noteSchema = new mongoose.Schema({
-    content: {
-      type: String,
-      minLength: 5,
-      required: true
-    },
-    important: Boolean,
+  content: {
+    type: String,
+    minLength: 5,
+    required: true
+  },
+  important: Boolean,
 })
 
 noteSchema.set('toJSON', {

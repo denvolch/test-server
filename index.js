@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', (req, res, next) => {
-  // console.log('i sent GET for all', req, res)
   Note
     .find({})
     .then(notes => {
@@ -54,7 +53,7 @@ app.post('/api/notes', (req, res, next) => {
     important: body.important || false
   })
   note
-    .save()  
+    .save()
     .then(result => {
       console.log('new note is saved')
       res.json(result)
@@ -65,7 +64,7 @@ app.post('/api/notes', (req, res, next) => {
 app.delete('/api/notes/:id', (req, res, next) => {
   Note
     .findByIdAndDelete(req.params.id)
-    .then(result => res.status(204).end())
+    .then(() => res.status(204).end())
     .catch(err => next(err))
 })
 
@@ -79,17 +78,14 @@ app.put('/api/notes/:id', (req, res, next) => {
     .findByIdAndUpdate(
       req.params.id,
       note,
-      { 
+      {
         new: true,
         runValidators: true,
         context: 'query'
       }
     )
     .then(updatedNote => res.json(updatedNote))
-    .catch(err => {
-      console.log('CATCH FROM PUT METHOD', err)
-      return next(err)
-    })
+    .catch(err => next(err))
 })
 
 const errorHandler = (err, req, res, next) => {

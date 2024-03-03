@@ -4,3 +4,4 @@ services
 
 mongo.js
 .env
+*copy.js
