@@ -10,16 +10,6 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('dist'))
 
-const errorHandler = (err, req, res, next) => {
-  console.log(err.message)
-
-  if (err.name === 'CastError') {
-    return res.status(400).send({ error: 'malformatted id' })
-  }
-
-  next(err)
-}
-app.use(errorHandler)
 
 
 app.get('/', (req, res) => {
@@ -88,8 +78,23 @@ app.put('/api/notes/:id', (req, res, next) => {
   Note
     .findByIdAndUpdate(req.params.id, note, { new: true })
     .then(updatedNote => res.json(updatedNote))
-    .catch(err => next(err))
+    .catch(err => {
+      console.log('CATCH FROM PUT METHOD', err)
+      return next(err)
+    })
 })
+
+const errorHandler = (err, req, res, next) => {
+  console.log(`errorHandler for '${err.name}': `, err.message)
+  if (err.name === 'CastError') {
+    return res.status(400).send({ error: 'malformatted id' })
+  } else if (err.name === 'ValidationError') {
+    return res.status(400).json({ error: err.message })
+  }
+
+  next(err)
+}
+app.use(errorHandler)
 
 const unknownEndpoint = (req, res) => res.status(404).send({ error: 'unknown endpoint' })
 app.use(unknownEndpoint)
