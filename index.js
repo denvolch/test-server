@@ -76,7 +76,15 @@ app.put('/api/notes/:id', (req, res, next) => {
   }
 
   Note
-    .findByIdAndUpdate(req.params.id, note, { new: true })
+    .findByIdAndUpdate(
+      req.params.id,
+      note,
+      { 
+        new: true,
+        runValidators: true,
+        context: 'query'
+      }
+    )
     .then(updatedNote => res.json(updatedNote))
     .catch(err => {
       console.log('CATCH FROM PUT METHOD', err)
