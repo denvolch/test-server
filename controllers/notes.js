@@ -41,7 +41,7 @@ notesRouter.post('/', (req, res, next) => {
     .save()
     .then(result => {
       console.log('new note is saved')
-      res.json(result)
+      res.status(201).json(result)
     })
     .catch(err => next(err))
 })
