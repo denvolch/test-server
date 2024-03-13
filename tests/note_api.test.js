@@ -38,7 +38,7 @@ describe('initializing and getting all notes', () => {
     assert.strictEqual(contents.includes('HTML is easy'), true)
   })
 
-  describe('getting and view a specific note', () =>{
+  describe('getting and view a specific note', () => {
     test('a specific note can be viewed', async () => {
       const notesAtStart = await helper.noteInDb()
 

@@ -13,12 +13,16 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+  // if (process.env.NODE_ENV === 'test') console.log('ERROR HANDLER ', err)
   logger.error(`errorHandler for '${err.name}': `, err.message)
 
   if (err.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message })
+  } else if (err.name === 'MongoServerError'
+    && err.message.includes('E11000 duplicate key error collection')) {
+    return res.status(400).json({ error: 'expected `username` to be unique' })
   }
 
   next(err)
