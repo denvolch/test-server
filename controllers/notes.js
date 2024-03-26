@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
-  if (authorization && authorization.startWith('Bearer ')) {
+  if (authorization && authorization.startsWith('Bearer ')) {
     return authorization.replace('Bearer ', '')
   }
 
   return null
 }
+
 
 notesRouter.get('/', async (req, res) => {
   const notes = await Note.find({}).populate('user', { username: 1, name: 1 })
